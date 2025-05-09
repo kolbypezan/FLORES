@@ -397,7 +397,7 @@
       <img src="logo.png" alt="FLORES Logo">
       <div class="logo-text-row">
         <div class="logo-title">FLORES</div>
-        <div class="logo-subtitle">
+        <div data-i18n="subtitle" class="logo-subtitle">
           Fellow Latine Organizers Reconnecting<br>
           and Educating in the Suburbs
         </div>
@@ -434,7 +434,7 @@
 </section>
   <main>
     <section id="about" class="about">
-      <h2 data-i18n="missionTitle">Our Mission</h2>
+      <h2 class="text-3xl font-bold text-black mb-12 text-center" data-i18n="missionTitle">Our Mission</h2>
       <p data-i18n="missionText">Placeholder, give mission statement here</p>
     </section>
 
@@ -449,7 +449,7 @@
 
     <section id="events" class="bg-teal-900 py-16 px-4">
   <div class="max-w-7xl mx-auto">
-    <h2 class="text-3xl font-bold text-black mb-12 text-center">Upcoming Events</h2>
+    <h2 data-i18n="upcomingevents" class="text-3xl font-bold text-black mb-12 text-center">Upcoming Events</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       
       <!-- Event 1 -->
@@ -460,8 +460,8 @@
         </div>
         <img src="event1.jpg" alt="Event 1" class="w-full h-64 object-cover">
         <div class="p-6">
-          <h3 class="text-xl font-semibold text-teal-900 mb-2"> FLORES First Movie Night</h3>
-          <p class="text-gray-700 text-sm mb-4">We will be watching even the rain at Casa Dupage placeholder description...</p>
+          <h3 data-i18n="eventtitle1" class="text-xl font-semibold text-teal-900 mb-2"> FLORES First Movie Night</h3>
+          <p data-i18n="eventdescription1" class="text-gray-700 text-sm mb-4">We will be watching even the rain at Casa Dupage placeholder description...</p>
           <a target="_blank" href="https://www.instagram.com/p/DHW9myvunGG/?utm_source=ig_web_button_share_sheet&igsh=MzRlODBiNWFlZA==" class="inline-block bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 font-semibold">Learn More</a>
         </div>
       </div>
@@ -479,8 +479,8 @@
 
   <!-- Text -->
   <div class="p-6">
-    <h3 class="text-xl font-semibold text-teal-900 mb-2">FLORES 2nd event </h3>
-    <p class="text-gray-700 text-sm mb-4">something cool that will happen...</p>
+    <h3 data-i18n="eventtitle2" class="text-xl font-semibold text-teal-900 mb-2">FLORES Second Event </h3>
+    <p data-i18n="eventdescription2" class="text-gray-700 text-sm mb-4">Event 2 description</p>
     <a target="_blank" href="https://www.instagram.com/p/DGOpifMu0Ad/?utm_source=ig_web_button_share_sheet&igsh=MzRlODBiNWFlZA==" class="inline-block bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 font-semibold">Learn More</a>
   </div>
 </div>
@@ -488,13 +488,13 @@
       <!-- Event 3 -->
 <div class="bg-white rounded-xl shadow-md overflow-hidden relative">
          <div class="absolute top-0 left-0 text-white text-center px-4 py-2 rounded-br-xl z-20 event-info">
-          <p class="text-2xl font-bold leading-none ">Reoccuring</p>
-          <p class="text-sm uppercase ">Every Wednesday</p>
+          <p data-i18n="event3number" class="text-2xl font-bold leading-none ">Reoccuring</p>
+          <p data-i18n="event3date" class="text-sm uppercase ">Every Wednesday</p>
         </div>
         <img src="event3.jpg" alt="Event 2" class="w-full h-64 object-cover">
         <div class="p-6">
-          <h3 class="text-xl font-semibold text-teal-900 mb-2">FLORES </h3>
-          <p class="text-gray-700 text-sm mb-4">Meetings for community placeholder...</p>
+          <h3 data-i18n="eventtitle3" class="text-xl font-semibold text-teal-900 mb-2">FLORES Meeting</h3>
+          <p data-i18n="eventdescription3" class="text-gray-700 text-sm mb-4">Meetings for community placeholder...</p>
           <a target="_blank" href="https://www.instagram.com/p/DGdnpMHO_WH/?utm_source=ig_web_button_share_sheet&igsh=MzRlODBiNWFlZA==" class="inline-block bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 font-semibold">Learn More</a>
         </div>
       </div>
@@ -544,8 +544,17 @@ function moveCarousel(direction) {
 
     const translations = {
       es: {
+        event3number: "Periódico",
+        event3date: "Todos Los Miercoles",
+        eventtitle1: "FLORES Primera Noche de Cine",
+        eventtitle2: "FLORES Segundo Evento",
+        eventtitle3: "Reunión FLORES",
+        eventdescription1: "Estaremos viendo hasta la lluvia en Casa Dupage marcador de posición descripción...",
+        eventdescription2: "Descripción del evento 2",
+        eventdescription3: "Reuniones para el marcador de posición de la comunidad...",
+        upcomingevents: "Próximos Eventos",
         about: "Sobre Nosotros",
-        subtitle: "Organizadores Latines Reuniéndose y Educando en los Suburbios",
+        subtitle: "Organizadores Latines Reuniéndose <br> y Educando en los Suburbios",
         missionTitle: "Nuestra Misión",
         missionText: "Aquí va la declaración de misión",
         peciolos: "Peciolos",
@@ -567,8 +576,17 @@ function moveCarousel(direction) {
         send: "Enviar"
       },
       en: {
+        event3number: "Reoccuring",
+        event3date: "Every Wednesday",
+        eventtitle1: "FLORES First Movie Night",
+        eventtitle2: "FLORES Second Event",
+        eventtitle3: "FLORES Meeting",
+        eventdescription1: "We will be watching even the rain at Casa Dupage placeholder description...",
+        eventdescription2: "Event 2 description",
+        eventdescription3: "Meetings for community placeholder...",
+        upcomingevents: "Upcoming Events",
         about: "About",
-        subtitle: "Fellow Latine Organizers Reconnecting and Educating in the Suburbs",
+        subtitle: "Fellow Latine Organizers Reconnecting <br> and Educating in the Suburbs",
         missionTitle: "Our Mission",
         missionText: "Placeholder, give mission statement here",
         peciolos: "Peciolos",
@@ -599,6 +617,7 @@ function moveCarousel(direction) {
         const key = el.getAttribute("data-i18n");
         if (translations[currentLang][key]) {
           el.textContent = translations[currentLang][key];
+          el.innerHTML = translations[currentLang][key];
         }
       });
     }
