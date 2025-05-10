@@ -25,6 +25,219 @@
   font-size: 1rem;
   z-index: 10;
 }
+.flower-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1; /* Push it behind everything else */
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* So it doesn't block interaction */
+  overflow: hidden;
+}
+#flower-section {
+  position: sticky;
+  z-index: 1;
+  background: white;
+  height: 2000px; /* or whatever fits your layout */
+}
+.container{
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+    width:350px;
+    height:510px;
+}
+@keyframes rotate{
+  100%{transform: rotate(360deg);}
+}
+.pot{
+  position: absolute;
+  width: 70px;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent; 
+  border-top: 60px solid #FF7043;
+  bottom: 104px;
+  left: 125px;
+  z-index: 2;
+}
+.pot:before{
+  position: absolute;
+  content: '';
+  width: 87px;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;  
+  border-top: 9px solid #F4511E;
+  top: -60px;
+  left: -12px;
+}
+.pot:after{
+  position: absolute;
+  content: '';
+  width: 110px;
+  height: 18px;
+  top: -78px;
+  left: -20px;
+  border-radius: 5px;
+  background-color: #FF7043;
+}
+@keyframes show{
+  5%{opacity: 1;}
+  7%{transform: rotate(40deg);}
+  24%{opacity: 1;}
+  25%{opacity: 0;}
+}
+@keyframes water{
+  7%{opacity: 0;}
+  8%{opacity: 1;}
+  21%{opacity: 1;}
+  22%{opacity: 0;}
+}
+.flower{
+  position: absolute;
+  bottom: 180px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 50px;
+  transform: rotate(180deg);
+}
+.stem{
+  position: absolute;
+  left: 25px;
+  width: 5px;
+  height: 0px;
+  background: linear-gradient(-90deg, #0d0, #0a0);
+}
+@keyframes grow{
+  25%{height: 0;}
+  34%{height: 22px;}
+  39%{height: 22px;}
+  41%{height: 27px;}
+  45%{height: 27px;}
+  52%{height: 92px;}
+  55%{height: 94px;}
+  100%{height: 120px;}
+}
+.leaf{
+  position: absolute;
+  width: 25px;
+  top: -10px;
+  left: 18px;
+  height: 38px;
+  border-radius: 1% 100%;
+  background: linear-gradient(70deg, #0e0, #0a0);
+  transform-origin: bottom;
+  transform: rotate(-110deg);
+}
+@keyframes leaf-1{
+  0%{transform: scaleY(0) rotate(-180deg);}
+  38%{transform: scaleY(0) rotate(-110deg);}
+  50%{transform: scaleY(1) rotate(-110deg);}
+}
+.leaf:before{
+  position: absolute;
+  content: '';
+  top: 18px;
+  left: -33px;
+  width: 30px;
+  height: 45px;
+  border-radius: 1% 100%;
+  background: linear-gradient(70deg, #0e0, #0a0);
+  transform: rotate(110deg);
+}
+@keyframes leaf-2{
+  0%{transform: scaleY(0) rotate(110deg);}
+  45%{transform: scaleY(0) rotate(110deg);}
+  52%{transform: scaleY(1) rotate(110deg);}
+}
+.leaf:after{
+  position: absolute;
+  content: '';
+  top: -20px;
+  left: -60px;
+  width: 25px;
+  height: 35px;
+  border-radius: 1% 100%;
+  background: linear-gradient(70deg, #0e0, #0a0);
+  transform-origin: bottom;
+}
+@keyframes leaf-3{
+  0%{transform: scaleY(0);}
+  55%{transform: scaleY(0);}
+  72%{transform: scaleY(1);}
+}
+.dot{
+  position: absolute;
+  top: 147px;
+  left: 24px;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  background-color: #f8d545;
+  box-shadow: 0 0 0 4px #d85,
+        0 0 8px 4px #444,
+        inset 0 0 8px #fd0;
+  opacity: 0;
+}
+@keyframes flower{
+  72%{opacity: 0;}
+  74%{opacity: 1;}
+  100%{opacity: 1;}
+}
+.petal{
+  position: absolute;
+  width: 0px;
+  height: 40px;
+  border-radius: 100% 0% 50% 50% /50% 0% 100% 50%;
+  background: linear-gradient(
+  185deg,
+    #941346 0%,
+    #E63B94 50%,
+    #FF5AB0 75%,
+    #FF7DC1 100%
+  );
+  opacity: 0;
+}
+@keyframes petal{
+  72%{opacity: 0;}
+  84%{opacity: 1; width: 40px;}
+  100%{opacity: 1; width: 40px;}
+}
+.petal-1{
+  top: 155px;
+  left: -9px;
+}
+.petal-2{
+  top: 125px;
+  left: -18px;
+  transform: rotate(60deg);
+}
+.petal-3{
+  top: 105px;
+  left: 5px;
+  transform: rotate(120deg);
+}
+.petal-4{
+  top: 110px;
+  left: 35px;
+  transform: rotate(180deg);
+}
+.petal-5{
+  top: 140px;
+  left: 42px;
+  transform: rotate(240deg);
+}
+.petal-6{
+  top: 160px;
+  left: 18px;
+  transform: rotate(300deg);
+}
     * {
       box-sizing: border-box;
       margin: 0;
@@ -274,6 +487,7 @@
   background-color: #fff;
   transition: 0.3s;
 }
+
     @media (max-width: 768px) {
   .top-bar {
     flex-direction: column;
@@ -386,6 +600,30 @@
   </div>
 </section>
   <main>
+   <div class="flower-background">
+  <div class="container">
+    <div class="sun">
+      <div class="sunrays"></div>
+      <div class="circle"></div>
+    </div>
+    <div class="shadow"></div>
+    <div class="pot"></div>
+    <div class="water-jar"></div>
+    <div class="water"></div>
+    <div class="flower">
+      <div class="stem"></div>
+      <div class="leaf"></div>
+      <div class="petal petal-1"></div>
+      <div class="petal petal-2"></div>
+      <div class="petal petal-3"></div>
+      <div class="petal petal-4"></div>
+      <div class="petal petal-5"></div>
+      <div class="petal petal-6"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+</div>
+</section>
     <section id="about" class="about">
       <h2 class="text-3xl font-bold text-black mb-12 text-center" data-i18n="missionTitle">Our Mission</h2>
       <p data-i18n="missionText">Placeholder, give mission statement here</p>
@@ -471,7 +709,6 @@
     </form>
     <div id="form-message" style="display:none;" data-i18n="thanks" >Thanks you!</div>
   </section>
-
   </main>
 
   <footer>
@@ -648,6 +885,39 @@ document.getElementById('contact-form').addEventListener('submit', function(even
     alert('Oops! There was a problem submitting your form.');
   });
 });
+</script>
+<script>
+   window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
+    const progress = Math.min(scrollTop / maxScroll, 1); // range: 0 to 1
+
+    // Stem growth
+    const stem = document.querySelector('.stem');
+    stem.style.height = `${progress * 120}px`;
+
+    // Leaf scale and rotation
+    const leaf = document.querySelector('.leaf');
+    const leafScale = Math.min(progress * 2, 1);
+    leaf.style.transform = `scaleY(${leafScale}) rotate(-110deg)`;
+
+    // Petals
+    const petals = document.querySelectorAll('.petal');
+    petals.forEach((petal, i) => {
+      const threshold = 0.6 + i * 0.05;
+      if (progress >= threshold) {
+        petal.style.opacity = '1';
+        petal.style.width = '40px';
+      } else {
+        petal.style.opacity = '0';
+        petal.style.width = '0px';
+      }
+    });
+
+    // Center dot
+    const dot = document.querySelector('.dot');
+    dot.style.opacity = progress > 0.95 ? '1' : '0';
+  });
 </script>
 </body>
 </html>
