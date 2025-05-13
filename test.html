@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FLORES</title>
+  <link rel="icon" href="logo.png" type="image/png"/> <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/8ac9f7fb0f.js" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --primary: #005c5c; /* Tealish Green */
+      --accent: #fcb900;  /* Yellow */
+      --bg-light: #f9f9f9;
+      --text-dark: #222;
+      --text-light: #fff;
+      --flower-pink: #f9a8d4;
+    }
+    .event-info {
+      position: absolute;
+      left: 0%;
+      background-color: var(--primary);
+      color: white;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      z-index: 10;
+      border-top-left-radius: 0.75rem; /* Match card rounding */
+      border-bottom-right-radius: 0.75rem;
+    }
+    .flower-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    /* Container for the flower animation */
+    .flower-container-animation { /* Renamed to avoid conflict with .container */
+      position: absolute;
+      margin: auto;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width:350px;
+      height:510px;
+    }
+    @keyframes rotate{
+      100%{transform: rotate(360deg);}
+    }
+    .pot{
+      position: absolute;
+      width: 70px;
+      height: 0;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;  
+      border-top: 60px solid #FF7043; /* Orange pot */
+      bottom: 104px;
+      left: 125px;
+      z-index: 2;
+    }
+    .pot:before{
+      position: absolute;
+      content: '';
+      width: 87px;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;    
+      border-top: 9px solid #F4511E; /* Darker orange rim */
+      top: -60px;
+      left: -12px;
+    }
+    .pot:after{
+      position: absolute;
+      content: '';
+      width: 110px;
+      height: 18px;
+      top: -78px;
+      left: -20px;
+      border-radius: 5px;
+      background-color: #FF7043; /* Orange pot top */
+    }
+    .flower{
+      position: absolute;
+      bottom: 180px; /* Adjusted to sit in the pot */
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      width: 50px;
+      /* transform: rotate(180deg); Flower starts upright, stem grows upwards */
+    }
+    .stem{
+      position: absolute;
+      bottom: 0; /* Stem starts from the base of the flower div */
+      left: 22.5px; /* Centered in the 50px flower width */
+      width: 5px;
+      height: 0px; /* Starts with 0 height */
+      background: linear-gradient(to top, #0d0, #0a0); /* Green stem */
+      transition: height 0.5s ease-out; /* Smooth growth */
+    }
+    .leaf{
+      position: absolute;
+      width: 25px;
+      bottom: 20px; /* Position relative to stem base */
+      left: -5px; /* Adjust to attach to stem */
+      height: 38px;
+      border-radius: 100% 0% 50% 50% / 50% 0% 100% 50%; /* Leaf shape */
+      background: linear-gradient(70deg, #0e0, #0a0);
+      transform-origin: bottom right;
+      transform: scaleY(0) rotate(45deg); /* Initially hidden and angled */
+      transition: transform 0.5s ease-out 0.2s; /* Delayed animation */
+    }
+    .leaf.leaf-left { /* For a leaf on the other side */
+        left: auto;
+        right: -5px;
+        transform-origin: bottom left;
+        transform: scaleY(0) rotate(-45deg);
+    }
+    .dot{
+      position: absolute;
+      bottom: 120px; /* Position at the top of a 120px stem */
+      left: 17.5px; /* Centered */
+      height: 15px;
+      width: 15px;
+      border-radius: 50%;
+      background-color: #f8d545; /* Yellow center */
+      box-shadow: 0 0 0 4px #d85, /* Orange shadow */
+                  0 0 8px 4px #444, /* Darker shadow */
+                  inset 0 0 8px #fd0; /* Inner yellow highlight */
+      opacity: 0;
+      transition: opacity 0.5s ease-out 0.5s; /* Delayed appearance */
+    }
+    .petal{
+      position: absolute;
+      width: 0px; /* Start with 0 width */
+      height: 40px;
+      border-radius: 50% 0;
+      background: linear-gradient(
+        185deg,
+        #941346 0%, /* Dark pink */
+        #E63B94 50%, /* Medium pink */
+        #FF5AB0 75%, /* Lighter pink */
+        #FF7DC1 100% /* Lightest pink */
+      );
+      opacity: 0;
+      transform-origin: bottom center;
+      transition: width 0.4s ease-out, opacity 0.4s ease-out;
+    }
+    /* Positioning petals around the .dot */
+    .petal-1{ bottom: 125px; left: 5px; transform: rotate(-30deg); transition-delay: 0.7s; }
+    .petal-2{ bottom: 130px; left: -5px; transform: rotate(-75deg); transition-delay: 0.8s; }
+    .petal-3{ bottom: 130px; left: 25px; transform: rotate(15deg); transition-delay: 0.9s; }
+    .petal-4{ bottom: 125px; left: 35px; transform: rotate(60deg); transition-delay: 1.0s; }
+    .petal-5{ bottom: 115px; left: 2px; transform: rotate(-120deg); transition-delay: 1.1s; }
+    .petal-6{ bottom: 115px; left: 30px; transform: rotate(105deg); transition-delay: 1.2s; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    .download-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .download-btn:hover {
+      background: #004444; /* Darker shade of primary */
+    }
+    form input, form textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    .carousel {
+      position: relative;
+      width: 100vw;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    .carousel-container {
+      display: flex;
+      width: 100%; /* Ensure container takes full width for translateX to work correctly */
+    }
+    .carousel-images {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      width: 100%; /* Each image is 100vw, so this should be totalItems * 100% if not using translateX on this element */
+    }
+    .carousel-item {
+      flex-shrink: 0;  
+      width: 100vw;  
+      height: 100vh;  /* Full viewport height */
+      object-fit: cover;  
+    }
+    .carousel-prev, .carousel-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      background: rgba(0, 0, 0, 0.3);
+      color: white;
+      border: none;
+      padding: 0.8rem 1rem;
+      cursor: pointer;
+      z-index: 10;
+      border-radius: 50%;
+      transition: background-color 0.3s ease;
+    }
+    .carousel-prev:hover, .carousel-next:hover {
+      background: rgba(0, 0, 0, 0.6);
+    }
+    .carousel-prev { left: 15px; }
+    .carousel-next { right: 15px; }
+
+    .logo-combo {
+      display: flex;
+      align-items: flex-start; /* Align items to the top */
+      gap: 0.5rem; /* Space between logo and text */
+      position: relative;  
+      margin-top: -50px;  /* Pulls the logo combo up */
+      z-index: 2;  /* Ensures it's above other elements if needed */
+    }
+    .logo-combo img {
+      max-height: 42px; /* Adjust as needed */
+      margin-top: 0; /* Reset margin if any */
+    }
+    .logo-text-row {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; /* Align text to the top of its container */
+      gap: 0.3rem; /* Space between title and subtitle */
+      color: white;
+      align-items: flex-start; /* Align text to the left */
+    }
+    .logo-title {
+      font-size: 1.8rem; /* Adjust as needed */
+      font-weight: bold;
+      white-space: nowrap; /* Prevents title from wrapping */
+    }
+    .logo-subtitle {
+      font-size: 0.75rem; /* Adjust as needed */
+      line-height: 1.1;
+      max-width: 280px; /* Limit width to control wrapping */
+      margin-top: -8px; /* Fine-tune vertical position */
+    }
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif; /* Added Inter with Segoe UI as fallback */
+      background-attachment: fixed; /* Parallax effect for background if one is set */
+      background-size: cover;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+    header {
+      background-color: var(--primary);
+      color: var(--text-light);
+      position: sticky; /* Makes header sticky */
+      top: 0;
+      z-index: 1000; /* High z-index to stay on top */
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: adds subtle shadow */
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 1rem; /* Increased padding */
+      background-color: var(--primary);
+    }
+    .language-toggle {
+      display: flex;
+      align-items: center;
+      margin-right: 10px;  
+      padding-bottom: 1rem; /* Align with nav links padding */
+    }
+    .language-toggle button {
+      background: none;
+      color: white;
+      border: 1px solid white;
+      padding: 0.5rem 0.6rem;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .language-toggle button:hover {
+        background-color: white;
+        color: var(--primary);
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+      padding: 0.0rem 1rem; /* Reduced top/bottom padding as top-bar has it */
+      background-color: var(--primary);
+    }
+    .logo img { /* This was .logo-combo img before, ensure it's correct or add .logo class to the img parent */
+      max-height: 100px;  
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem; /* Space between nav items */
+    }
+    .nav-links li a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    .nav-links li a:hover {
+        color: var(--accent); /* Yellow hover for nav links */
+    }
+    .hero {
+      padding: 3rem 2rem;  
+      text-align: center;
+      color: var(--text-light);
+      background-color: var(--primary); /* Or a gradient/image */
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin: 0;  
+    }
+    .hero p {
+      padding: 1rem 2rem 3rem; /* Adjusted padding */
+      font-size: 1.25rem;
+      margin-top: 0.5rem;  
+    }
+    section {
+      padding: 4rem 1rem; /* Increased padding for sections */
+      text-align: center;
+    }
+    .about, .events, .contact { /* .shop removed from here to have its own style */
+      background-color: var(--bg-light);
+    }
+    #shop { /* Specific styling for shop section */
+        background-color: #e6f2f2; /* A very light teal, adjust as needed */
+    }
+    .subcommittees .peciolo-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+      align-items: center; /* Center the items */
+    }
+    .peciolo {
+      background-color: var(--flower-pink);
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      color: #222;
+      font-weight: bold;
+      width: fit-content; /* Adjust width to content */
+      transition: transform 0.2s;
+    }
+    .peciolo:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .events ul { /* This was for a list, the new event cards are divs */
+      list-style: none;
+      padding: 0;
+    }
+    /* Style for event cards (if needed beyond Tailwind) */
+    .event-card { /* Example if you add a class to event divs */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .event-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+    .shop button, .shop a.button-style { /* General button style for shop if not using Tailwind directly */
+      padding: 0.7rem 1.5rem;
+      background-color: var(--accent);
+      color: var(--text-dark);
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none; /* For <a> styled as buttons */
+      display: inline-block; /* For <a> styled as buttons */
+      transition: background-color 0.3s ease;
+    }
+    .shop button:hover, .shop a.button-style:hover {
+        background-color: #e0a800; /* Darker yellow */
+    }
+    .contact form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      max-width: 600px;
+      margin: auto;
+    }
+    .contact label { /* Not used in current form, but good practice */
+      font-weight: bold;
+    }
+    .contact input, .contact textarea {
+      width: 100%;
+      padding: 0.8rem; /* Increased padding */
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .contact button { /* Uses download-btn class now, this can be removed or be more specific */
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    footer {
+      background-color: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem; /* Increased padding */
+    }
+    .menu-toggle {
+      display: none; /* Hidden by default, shown in media query */
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px; /* Space between burger lines */
+      padding: 10px;
+      background: none;
+      border: none;
+      z-index: 1001; /* Ensure it's above nav links if they overlap during animation */
+    }
+    .menu-toggle div { /* Burger icon lines */
+      width: 25px;
+      height: 3px;
+      background-color: #fff;
+      transition: all 0.3s ease-in-out;
+    }
+    /* Animation for burger to X */
+    .menu-toggle.active .line1 { transform: rotate(-45deg) translate(-5px, 6px); }
+    .menu-toggle.active .line2 { opacity: 0; }
+    .menu-toggle.active .line3 { transform: rotate(45deg) translate(-5px, -6px); }
+
+    @media (max-width: 768px) {
+      .top-bar {
+        flex-direction: column;
+        align-items: center;
+        display: none; /* As per original, but consider if it should be visible */
+      }
+      .logo-combo {
+        justify-content: center; /* Center logo and title */
+        align-items: center;
+        flex-direction: row; /* Keep them in a row */
+        margin-top: 0; /* Reset margin */
+      }
+      .logo-combo img {
+        max-height: 36px; /* Smaller logo on mobile */
+      }
+      .logo-text-row {
+        align-items: flex-start; /* Align text to the left */
+        text-align: left;
+      }
+      .logo-subtitle {
+        display: none;  /* Hide subtitle on small screens as per original */
+      }
+      nav {
+        padding: 0.5rem 1rem; /* Adjust padding for nav */
+      }
+      .nav-links {
+        display: none; /* Hidden by default */
+        flex-direction: column;
+        width: 100%;
+        position: absolute; /* Position it to overlay content */
+        top: 100%; /* Start below the nav bar */
+        left: 0;
+        background-color: var(--primary);
+        align-items: center;  
+        padding: 1rem 0; /* Padding for dropdown items */
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      }
+      .nav-links.show {
+        display: flex; /* Show when active */
+      }
+      .nav-links li {
+        padding: 0.8rem 0; /* Padding for each nav item */
+        width: 100%; /* Make list items take full width */
+        text-align: center;
+      }
+      .nav-links li a {
+          display: block; /* Make the whole area clickable */
+          width: 100%;
+      }
+      .menu-toggle {
+        display: flex; /* Show burger menu */
+        /* margin-left: auto; Remove if nav has justify-content: space-between */
+      }
+      .nav-links li.social-media {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem; /* Space out social icons */
+        padding: 1rem 0;
+      }
+      .language-toggle {
+        margin-top: 0; /* Reset margin */
+        padding-bottom: 0; /* Reset padding */
+        /* The language toggle is part of the nav, so it will be part of the flex layout */
+      }
+      .carousel-item {
+        height: 50vh;  /* Adjust carousel height for mobile */
+      }
+      .hero h1 { font-size: 2.2rem; }
+      .hero p { font-size: 1rem; padding: 1rem; }
+      section { padding: 2.5rem 1rem; }
+      .event-info { font-size: 0.9rem; padding: 0.4rem 0.8rem;}
+      .event-info .text-2xl { font-size: 1.5rem; }
+      .event-info .text-sm { font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body class="bg-gray-50"> <header>
+  <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+    <div class="logo-combo" style="margin-top: 0;"> <img src="https://placehold.co/100x100/005c5c/white?text=FLORES&font=raleway" alt="FLORES Logo" class="h-10 md:h-12"> <div class="logo-text-row">
+        <div class="logo-title">FLORES</div>
+        <div data-i18n="subtitle" class="logo-subtitle hidden md:block"> Fellow Latine Organizers Reconnecting<br>
+          and Educating in the Suburbs
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center">
+        <ul class="nav-links hidden md:flex items-center space-x-6 text-lg"> <li><a href="#about" data-i18n="about" class="hover:text-yellow-300">About</a></li>
+          <li><a href="#subcommittees" data-i18n="peciolos" class="hover:text-yellow-300">Peciolos</a></li>
+          <li><a href="#events" data-i18n="events" class="hover:text-yellow-300">Events</a></li>
+          <li><a href="#shop" data-i18n="shop" class="hover:text-yellow-300">Shop</a></li>
+          <li><a href="#contact" data-i18n="contact" class="hover:text-yellow-300">Contact</a></li>
+          <li class="hidden md:flex items-center space-x-4"> <a href="https://www.tiktok.com/@flores.youth.committee" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.instagram.com/flores_youth_committee" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://bsky.app/profile/florescommittee.bsky.social" target="_blank" rel="noopener" aria-label="Bluesky"><i class="fa-brands fa-bluesky"></i></a>
+          </li>
+        </ul>
+        <div class="language-toggle ml-4 hidden md:flex"> <button onclick="toggleLanguage()" aria-label="Toggle Language ES/EN">ES / EN</button>
+        </div>
+        <button class="menu-toggle md:hidden ml-4" onclick="toggleMenu()" aria-label="Toggle Menu" aria-expanded="false">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </button>
+    </div>
+  </nav>
+  <ul id="mobile-nav-links" class="nav-links md:hidden bg-primary">
+      <li><a href="#about" data-i18n="about" onclick="closeMenu()">About</a></li>
+      <li><a href="#subcommittees" data-i18n="peciolos" onclick="closeMenu()">Peciolos</a></li>
+      <li><a href="#events" data-i18n="events" onclick="closeMenu()">Events</a></li>
+      <li><a href="#shop" data-i18n="shop" onclick="closeMenu()">Shop</a></li>
+      <li><a href="#contact" data-i18n="contact" onclick="closeMenu()">Contact</a></li>
+      <li class="social-media">
+          <a href="https://www.tiktok.com/@flores.youth.committee" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+          <a href="https://www.instagram.com/flores_youth_committee" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://bsky.app/profile/florescommittee.bsky.social" target="_blank" rel="noopener" aria-label="Bluesky"><i class="fa-brands fa-bluesky"></i></a>
+      </li>
+      <li>
+        <div class="language-toggle flex justify-center py-2">
+            <button onclick="toggleLanguage()" aria-label="Toggle Language ES/EN">ES / EN</button>
+        </div>
+      </li>
+  </ul>
+</header>
+
+<section class="carousel">
+  <div class="carousel-container">
+    <div class="carousel-images">
+      <img src="https://placehold.co/1920x1080/005C5C/FFFFFF?text=FLORES+Event+1&font=raleway" alt="Image 1: FLORES Community Event" class="carousel-item">
+      <img src="https://placehold.co/1920x1080/FCB900/000000?text=Educating+Our+Youth&font=raleway" alt="Image 2: Educational Workshop" class="carousel-item">
+      <img src="https://placehold.co/1920x1080/F9A8D4/222222?text=Pachamama+Project&font=raleway" alt="Image 3: Pachamama Initiative" class="carousel-item">
+    </div>
+    <button class="carousel-prev" onclick="moveCarousel(-1)" aria-label="Previous Slide">&#10094;</button>
+    <button class="carousel-next" onclick="moveCarousel(1)" aria-label="Next Slide">&#10095;</button>
+  </div>
+</section>
+
+ <main>
+  <div class="flower-background">
+    <div class="flower-container-animation"> <div class="pot"></div>
+      <div class="flower">
+        <div class="stem"></div>
+        <div class="leaf"></div> <div class="leaf leaf-left"></div> <div class="petal petal-1"></div>
+        <div class="petal petal-2"></div>
+        <div class="petal petal-3"></div>
+        <div class="petal petal-4"></div>
+        <div class="petal petal-5"></div>
+        <div class="petal petal-6"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="about" class="about py-16">
+    <div class="container mx-auto px-6">
+      <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center" data-i18n="missionTitle">Our Mission</h2>
+      <p class="text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto text-center" data-i18n="missionText">
+        FLORES empowers Latine organizers in suburban communities by fostering vital connections, providing popular education, and promoting community service. We cultivate spaces for growth, cultural affirmation, and collective action, rooted in a deep respect for Pachamama, to build a more just and vibrant future.
+      </p>
+    </div>
+  </section>
+
+  <section id="subcommittees" class="subcommittees bg-teal-50 py-16">
+    <div class="container mx-auto px-6">
+      <h2 class="text-4xl font-bold text-gray-800 mb-12 text-center" data-i18n="peciolos">Peciolos</h2>
+      <p class="text-lg text-gray-700 mb-10 text-center" data-i18n="peciolosIntro">Our work is organized into several key areas, our "peciolos," each focusing on a vital aspect of community empowerment.</p>
+      <div class="peciolo-list grid md:grid-cols-3 gap-8">
+        <div class="peciolo text-center p-6 shadow-md hover:shadow-lg transition-shadow">
+            <i class="fas fa-users text-3xl text-primary mb-3"></i>
+            <h3 class="text-xl font-semibold" data-i18n="ep">Popular Education</h3>
+        </div>
+        <div class="peciolo text-center p-6 shadow-md hover:shadow-lg transition-shadow">
+            <i class="fas fa-hands-helping text-3xl text-primary mb-3"></i>
+            <h3 class="text-xl font-semibold" data-i18n="cs">Community Service</h3>
+        </div>
+        <div class="peciolo text-center p-6 shadow-md hover:shadow-lg transition-shadow">
+            <i class="fas fa-leaf text-3xl text-primary mb-3"></i>
+            <h3 class="text-xl font-semibold" data-i18n="pacha">Pachamama</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="events" class="bg-white py-16">
+    <div class="container mx-auto px-6">
+      <h2 data-i18n="upcomingevents" class="text-4xl font-bold text-gray-800 mb-12 text-center">Upcoming Events</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden relative event-card">
+          <div class="event-info">
+            <p class="text-2xl font-bold leading-none">13</p>
+            <p class="text-sm uppercase">May 2025</p>
+          </div>
+          <img src="https://placehold.co/600x400/005c5c/white?text=Movie+Night&font=raleway" alt="Event 1 Poster" class="w-full h-64 object-cover">
+          <div class="p-6">
+            <h3 data-i18n="eventtitle1" class="text-xl font-semibold text-teal-900 mb-2">FLORES First Movie Night</h3>
+            <p data-i18n="eventdescription1" class="text-gray-700 text-sm mb-4">We will be watching "Even the Rain" at Casa Dupage. Join us for a night of film and discussion!</p>
+            <a target="_blank" href="https://www.instagram.com/p/DHW9myvunGG/" class="inline-block bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 font-semibold text-sm">Learn More</a>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden relative event-card">
+          <div class="event-info">
+            <p class="text-2xl font-bold leading-none">27</p>
+            <p class="text-sm uppercase">Jun 2025</p>
+          </div>
+          <img src="https://placehold.co/600x400/fcb900/black?text=Community+Workshop&font=raleway" alt="Event 2 Poster" class="w-full h-64 object-cover">
+          <div class="p-6">
+            <h3 data-i18n="eventtitle2" class="text-xl font-semibold text-teal-900 mb-2">FLORES Community Workshop</h3>
+            <p data-i18n="eventdescription2" class="text-gray-700 text-sm mb-4">Engage in an interactive workshop focused on local organizing strategies. All are welcome.</p>
+            <a target="_blank" href="https://www.instagram.com/p/DGOpifMu0Ad/" class="inline-block bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 font-semibold text-sm">Learn More</a>
+          </div>
+        </div>
+      
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden relative event-card">
+          <div class="event-info">
+            <p data-i18n="event3number" class="text-2xl font-bold leading-none">Weekly</p>
+            <p data-i18n="event3date" class="text-sm uppercase">Every Wednesday</p>
+          </div>
+          <img src="https://placehold.co/600x400/f9a8d4/black?text=FLORES+Meeting&font=raleway" alt="Event 3 Poster" class="w-full h-64 object-cover">
+          <div class="p-6">
+            <h3 data-i18n="eventtitle3" class="text-xl font-semibold text-teal-900 mb-2">FLORES General Meeting</h3>
+            <p data-i18n="eventdescription3" class="text-gray-700 text-sm mb-4">Join our regular meetings to discuss ongoing projects, plan future events, and connect with the community.</p>
+            <a target="_blank" href="https://www.instagram.com/p/DGdnpMHO_WH/" class="inline-block bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 font-semibold text-sm">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shop" class="shop py-16 px-4 bg-teal-50"> <div class="container mx-auto">
+      <h2 class="text-4xl font-bold text-gray-800 mb-6 text-center" data-i18n="shopTitle">Support FLORES</h2>
+      <p class="text-lg text-gray-700 mb-12 text-center max-w-2xl mx-auto" data-i18n="shopIntro">
+        Help us continue our work by purchasing our merchandise or making a donation. Every contribution makes a difference!
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col items-center p-6 transform hover:scale-105 transition-transform duration-300">
+          <img src="https://placehold.co/300x300/005C5C/FFFFFF?text=FLORES+T-Shirt&font=raleway" alt="FLORES T-Shirt" class="w-full h-64 object-contain mb-4 rounded">
+          <h3 class="text-2xl font-semibold text-teal-900 mb-2" data-i18n="shirtName">FLORES T-Shirt</h3>
+          <p class="text-gray-600 text-sm mb-3 text-center" data-i18n="shirtDesc">Show your support with our official FLORES T-Shirt. Made from 100% organic cotton.</p>
+          <p class="text-xl font-bold text-teal-700 mb-5" data-i18n="shirtPrice">$25.00</p>
+          <a href="#" class="mt-auto inline-block bg-yellow-500 text-gray-900 px-8 py-3 rounded-lg hover:bg-yellow-600 font-semibold text-md transition-colors" data-i18n="buyButton">Buy T-Shirt</a>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col items-center p-6 transform hover:scale-105 transition-transform duration-300">
+          <img src="https://placehold.co/300x300/FCB900/000000?text=FLORES+Sticker&font=raleway" alt="FLORES Sticker" class="w-full h-64 object-contain mb-4 rounded">
+          <h3 class="text-2xl font-semibold text-teal-900 mb-2" data-i18n="stickerName">FLORES Sticker</h3>
+          <p class="text-gray-600 text-sm mb-3 text-center" data-i18n="stickerDesc">High-quality vinyl sticker, perfect for laptops, water bottles, and more!</p>
+          <p class="text-xl font-bold text-teal-700 mb-5" data-i18n="stickerPrice">$5.00</p>
+          <a href="#" class="mt-auto inline-block bg-yellow-500 text-gray-900 px-8 py-3 rounded-lg hover:bg-yellow-600 font-semibold text-md transition-colors" data-i18n="buyButton">Buy Sticker</a>
+        </div>
+        
+        <div class="bg-primary text-white rounded-xl shadow-lg overflow-hidden flex flex-col items-center justify-center p-6 text-center transform hover:scale-105 transition-transform duration-300">
+            <i class="fas fa-hand-holding-heart text-5xl text-yellow-400 mb-4"></i>
+            <h3 class="text-2xl font-semibold mb-3" data-i18n="donateTitle">Make a Donation</h3>
+            <p class="text-gray-200 text-sm mb-5" data-i18n="donateDesc">Your generous donations help us fund our programs and initiatives. Support FLORES today!</p>
+            <a href="#" class="mt-auto inline-block bg-yellow-500 text-gray-900 px-8 py-3 rounded-lg hover:bg-yellow-600 font-semibold text-md transition-colors" data-i18n="donateButton">Donate Now</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+        <h2 data-i18n="contact" class="text-4xl font-bold text-gray-800 mb-12 text-center">Contact Us</h2>
+        <form id="contact-form" class="max-w-xl mx-auto bg-gray-50 p-8 rounded-lg shadow-md">
+            <div class="mb-6">
+                <label for="name" class="block text-gray-700 text-sm font-bold mb-2 sr-only" data-i18n="formName">Name</label>
+                <input type="text" id="name" name="name" placeholder="Name / Nombre" required class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="mb-6">
+                <label for="email" class="block text-gray-700 text-sm font-bold mb-2 sr-only" data-i18n="formEmail">Email</label>
+                <input type="email" id="email" name="_replyto" placeholder="Email / Correo Electrónico" required class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="mb-6">
+                <label for="message" class="block text-gray-700 text-sm font-bold mb-2 sr-only" data-i18n="formMessage">Message</label>
+                <textarea id="message" name="message" placeholder="Message / Mensaje" required rows="5" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="download-btn bg-primary hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline transition-colors" data-i18n="send">Send Message</button>
+            </div>
+        </form>
+        <div id="form-message" class="mt-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded text-center" style="display:none;" data-i18n="thanks">Thank you! Your message has been sent.</div>
+        <div id="form-error-message" class="mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded text-center" style="display:none;" data-i18n="formError">Oops! There was a problem. Please try again.</div>
+    </div>
+  </section>
+ </main>
+
+ <footer class="bg-primary text-white py-10">
+    <div class="container mx-auto px-6 text-center">
+        <p>&copy; <span id="currentYear"></span> FLORES. All rights reserved.</p>
+        <p class="text-sm mt-2" data-i18n="footerTagline">Cultivating Community, Empowering Voices.</p>
+    </div>
+ </footer>
+
+ <script>
+  // Carousel Logic
+  let currentIndex = 0;
+  function moveCarousel(direction) {
+    const items = document.querySelectorAll('.carousel-item');
+    const totalItems = items.length;
+    currentIndex += direction;
+
+    if (currentIndex < 0) {
+      currentIndex = totalItems - 1;
+    } else if (currentIndex >= totalItems) {
+      currentIndex = 0;
+    }
+
+    const carouselImages = document.querySelector('.carousel-images');
+    const newTransformValue = -currentIndex * 100; // Move by 100% of viewport width
+    carouselImages.style.transform = `translateX(${newTransformValue}%)`;
+  }
+  // Auto-slide functionality (optional)
+  // setInterval(() => moveCarousel(1), 5000); // Change slide every 5 seconds
+
+
+  // Language Toggle Logic
+  const translations = {
+    es: {
+      thanks: "¡Gracias! Tu mensaje ha sido enviado.",
+      formError: "¡Ups! Hubo un problema. Por favor, inténtalo de nuevo.",
+      comingsoon: "¡Muy pronto!",
+      event3number: "Semanal",
+      event3date: "Todos Los Miércoles",
+      eventtitle1: "FLORES Primera Noche de Cine",
+      eventtitle2: "Taller Comunitario FLORES",
+      eventtitle3: "Reunión General FLORES",
+      eventdescription1: "Estaremos viendo \"También la lluvia\" en Casa Dupage. ¡Únete para una noche de cine y discusión!",
+      eventdescription2: "Participa en un taller interactivo centrado en estrategias de organización local. Todos son bienvenidos.",
+      eventdescription3: "Únete a nuestras reuniones regulares para discutir proyectos en curso, planificar eventos futuros y conectar con la comunidad.",
+      upcomingevents: "Próximos Eventos",
+      about: "Sobre Nosotros",
+      subtitle: "Organizadores Latines Reuniéndose <br> y Educando en los Suburbios",
+      missionTitle: "Nuestra Misión",
+      missionText: "FLORES empodera a los organizadores latinos en comunidades suburbanas fomentando conexiones vitales, proporcionando educación popular y promoviendo el servicio comunitario. Cultivamos espacios para el crecimiento, la afirmación cultural y la acción colectiva, arraigados en un profundo respeto por la Pachamama, para construir un futuro más justo y vibrante.",
+      peciolos: "Peciolos",
+      peciolosIntro: "Nuestro trabajo se organiza en varias áreas clave, nuestros \"peciolos\", cada uno centrado en un aspecto vital del empoderamiento comunitario.",
+      ep: "Educación Popular",
+      cs: "Servicio Comunitario",
+      pacha: "Pachamama",
+      events: "Eventos",
+      shop: "Tienda",
+      shopTitle: "Apoya a FLORES",
+      shopIntro: "Ayúdanos a continuar nuestro trabajo comprando nuestra mercancía o haciendo una donación. ¡Cada contribución marca la diferencia!",
+      shirtName: "Camiseta FLORES",
+      shirtDesc: "Muestra tu apoyo con nuestra camiseta oficial de FLORES. Hecha de algodón 100% orgánico.",
+      shirtPrice: "$25.00",
+      stickerName: "Calcomanía FLORES",
+      stickerDesc: "Calcomanía de vinilo de alta calidad, ¡perfecta para laptops, botellas de agua y más!",
+      stickerPrice: "$5.00",
+      buyButton: "Comprar",
+      donateTitle: "Haz una Donación",
+      donateDesc: "Tus generosas donaciones nos ayudan a financiar nuestros programas e iniciativas. ¡Apoya a FLORES hoy!",
+      donateButton: "Donar Ahora",
+      contact: "Contáctanos",
+      formName: "Nombre:",
+      formEmail: "Correo Electrónico:",
+      formMessage: "Mensaje:",
+      send: "Enviar Mensaje",
+      footerTagline: "Cultivando Comunidad, Empoderando Voces."
+    },
+    en: {
+      thanks: "Thank you! Your message has been sent.",
+      formError: "Oops! There was a problem. Please try again.",
+      comingsoon: "Coming soon!",
+      event3number: "Weekly",
+      event3date: "Every Wednesday",
+      eventtitle1: "FLORES First Movie Night",
+      eventtitle2: "FLORES Community Workshop",
+      eventtitle3: "FLORES General Meeting",
+      eventdescription1: "We will be watching \"Even the Rain\" at Casa Dupage. Join us for a night of film and discussion!",
+      eventdescription2: "Engage in an interactive workshop focused on local organizing strategies. All are welcome.",
+      eventdescription3: "Join our regular meetings to discuss ongoing projects, plan future events, and connect with the community.",
+      upcomingevents: "Upcoming Events",
+      about: "About",
+      subtitle: "Fellow Latine Organizers Reconnecting <br> and Educating in the Suburbs",
+      missionTitle: "Our Mission",
+      missionText: "FLORES empowers Latine organizers in suburban communities by fostering vital connections, providing popular education, and promoting community service. We cultivate spaces for growth, cultural affirmation, and collective action, rooted in a deep respect for Pachamama, to build a more just and vibrant future.",
+      peciolos: "Peciolos",
+      peciolosIntro: "Our work is organized into several key areas, our \"peciolos,\" each focusing on a vital aspect of community empowerment.",
+      ep: "Popular Education",
+      cs: "Community Service",
+      pacha: "Pachamama",
+      events: "Events",
+      shop: "Shop",
+      shopTitle: "Support FLORES",
+      shopIntro: "Help us continue our work by purchasing our merchandise or making a donation. Every contribution makes a difference!",
+      shirtName: "FLORES T-Shirt",
+      shirtDesc: "Show your support with our official FLORES T-Shirt. Made from 100% organic cotton.",
+      shirtPrice: "$25.00",
+      stickerName: "FLORES Sticker",
+      stickerDesc: "High-quality vinyl sticker, perfect for laptops, water bottles, and more!",
+      stickerPrice: "$5.00",
+      buyButton: "Buy Now",
+      donateTitle: "Make a Donation",
+      donateDesc: "Your generous donations help us fund our programs and initiatives. Support FLORES today!",
+      donateButton: "Donate Now",
+      contact: "Contact Us",
+      formName: "Name:",
+      formEmail: "Email:",
+      formMessage: "Message:",
+      send: "Send Message",
+      footerTagline: "Cultivating Community, Empowering Voices."
+    }
+  };
+
+  let currentLang = 'en'; // Default language
+
+  function applyTranslations() {
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if (translations[currentLang] && translations[currentLang][key]) {
+        // For elements that might contain HTML (like the subtitle), use innerHTML
+        if (key === "subtitle" || key === "missionText" || key === "shopIntro" || key === "peciolosIntro") {
+             el.innerHTML = translations[currentLang][key];
+        } else {
+            el.textContent = translations[currentLang][key];
+        }
+      } else if (translations['en'] && translations['en'][key]) { // Fallback to English if key not found
+        if (key === "subtitle" || key === "missionText" || key === "shopIntro" || key === "peciolosIntro") {
+             el.innerHTML = translations['en'][key];
+        } else {
+            el.textContent = translations['en'][key];
+        }
+      }
+    });
+    // Update placeholders for form inputs
+    const nameInput = document.querySelector('input[name="name"]');
+    if (nameInput) nameInput.placeholder = currentLang === 'es' ? 'Nombre' : 'Name';
+    const emailInput = document.querySelector('input[name="_replyto"]');
+    if (emailInput) emailInput.placeholder = currentLang === 'es' ? 'Correo Electrónico' : 'Email';
+    const messageTextarea = document.querySelector('textarea[name="message"]');
+    if (messageTextarea) messageTextarea.placeholder = currentLang === 'es' ? 'Mensaje' : 'Message';
+  }
+
+  function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'es' : 'en';
+    localStorage.setItem('preferredLang', currentLang); // Save preference
+    applyTranslations();
+  }
+
+  // Mobile Menu Toggle
+  const menuToggleBtn = document.querySelector('.menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav-links');
+  function toggleMenu() {
+    const isExpanded = menuToggleBtn.getAttribute('aria-expanded') === 'true' || false;
+    menuToggleBtn.setAttribute('aria-expanded', !isExpanded);
+    menuToggleBtn.classList.toggle('active'); // For X animation
+    mobileNav.classList.toggle('show'); // This class should have "display: flex" or "display: block"
+  }
+  function closeMenu() { // Call this when a mobile nav link is clicked
+      menuToggleBtn.setAttribute('aria-expanded', 'false');
+      menuToggleBtn.classList.remove('active');
+      mobileNav.classList.remove('show');
+  }
+
+
+  // Contact Form Submission
+  document.getElementById('contact-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    const formMessageDiv = document.getElementById('form-message');
+    const formErrorDiv = document.getElementById('form-error-message');
+
+    formMessageDiv.style.display = 'none'; // Hide previous messages
+    formErrorDiv.style.display = 'none';
+
+    fetch('https://formspree.io/f/meogzazn', { // Replace with your Formspree endpoint
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    }).then(response => {
+      if (response.ok) {
+        formMessageDiv.style.display = 'block';
+        formMessageDiv.textContent = translations[currentLang].thanks || translations.en.thanks;
+        form.reset();
+      } else {
+        response.json().then(data => {
+          formErrorDiv.textContent = data.error || (translations[currentLang].formError || translations.en.formError);
+          formErrorDiv.style.display = 'block';
+        });
+      }
+    }).catch(error => {
+      formErrorDiv.textContent = translations[currentLang].formError || translations.en.formError;
+      formErrorDiv.style.display = 'block';
+    });
+  });
+
+  // Scroll-based Flower Animation
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    // Calculate scroll progress relative to a certain height, e.g., first 1000px of scroll
+    // or relative to the position of a specific section.
+    // For simplicity, let's use a fixed scroll height for full animation.
+    const animationTriggerHeight = Math.max(500, window.innerHeight * 0.8); // Flower fully blooms after scrolling this much
+    const progress = Math.min(scrollTop / animationTriggerHeight, 1);
+
+    const stem = document.querySelector('.flower .stem');
+    const leaves = document.querySelectorAll('.flower .leaf');
+    const petals = document.querySelectorAll('.flower .petal');
+    const dot = document.querySelector('.flower .dot');
+
+    if (stem) stem.style.height = `${progress * 120}px`; // Max height 120px
+
+    if (leaves) {
+        leaves.forEach(leaf => {
+            if (progress > 0.2) { // Start leaf animation a bit after stem
+                leaf.style.transform = leaf.classList.contains('leaf-left') ? `scaleY(${Math.min((progress - 0.2) * 2, 1)}) rotate(-45deg)` : `scaleY(${Math.min((progress - 0.2) * 2, 1)}) rotate(45deg)`;
+            } else {
+                leaf.style.transform = leaf.classList.contains('leaf-left') ? 'scaleY(0) rotate(-45deg)' : 'scaleY(0) rotate(45deg)';
+            }
+        });
+    }
+    
+    if (dot) {
+        if (progress > 0.7) { // Dot appears when flower is mostly grown
+            dot.style.opacity = Math.min((progress - 0.7) * 3, 1);
+        } else {
+            dot.style.opacity = '0';
+        }
+    }
+
+    if (petals) {
+        petals.forEach((petal, i) => {
+          const petalThreshold = 0.75 + i * 0.03; // Stagger petal appearance
+          if (progress >= petalThreshold) {
+            petal.style.opacity = '1';
+            petal.style.width = '20px'; // Max width for petals
+          } else if (progress > 0.7) { // Start showing petals after dot
+            petal.style.opacity = Math.max(0, (progress - 0.7) / (petalThreshold - 0.7) );
+            petal.style.width = `${Math.max(0, (progress - 0.7) / (petalThreshold - 0.7) * 20)}px`;
+          }
+          else {
+            petal.style.opacity = '0';
+            petal.style.width = '0px';
+          }
+        });
+    }
+  });
+
+  // Set current year in footer & Initializations
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    
+    // Load preferred language
+    const savedLang = localStorage.getItem('preferredLang');
+    if (savedLang) {
+        currentLang = savedLang;
+    }
+    applyTranslations(); // Apply translations on page load
+
+    // Initialize carousel to show the first item
+    moveCarousel(0); 
+  });
+
+ </script>
+</body>
+</html>

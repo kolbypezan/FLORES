@@ -25,6 +25,17 @@
   font-size: 1rem;
   z-index: 10;
 }
+.peciolo:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+  .event-card:hover {
+    transform: translateY(-5px); /* This moves the card up by 5 pixels */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15); /* This enhances the shadow */
+}
+     .shop button:hover, .shop a.button-style:hover {
+        background-color: #e0a800; /* Darker yellow */
+    }
 .flower-background {
   position: fixed;
   top: 0;
@@ -390,6 +401,7 @@
       color: white;
       font-weight: bold;
     }
+
     .hero {
   padding: 3rem 2rem; 
   text-align: center;
@@ -485,7 +497,7 @@
   width: 25px;
   height: 3px;
   background-color: #fff;
-  transition: 0.3s;
+  transition: 0.3s; 
 }
 
     @media (max-width: 768px) {
@@ -626,18 +638,28 @@
 </section>
     <section id="about" class="about">
       <h2 class="text-3xl font-bold text-black mb-12 text-center" data-i18n="missionTitle">Our Mission</h2>
-      <p data-i18n="missionText">Placeholder, give mission statement here</p>
+      <p data-i18n="missionText">Like flowers, FLORES (Fellow Latine Organizers Reconnecting and Educating in the Suburbs) nurtures the growth of Latine leadership and community in suburban areas. We blossom through shared knowledge via popular education, enrich our soil through community service, and honor our roots with a deep connection to Pachamama, cultivating a thriving network of engaged organizers.</p>
     </section>
 
-    <section id="subcommittees" class="subcommittees">
-      <h2 class="text-3xl font-bold text-black mb-12 text-center" data-i18n="peciolos">Peciolos</h2>
-      <p data-i18n="comingsoon">Coming soon!</p>
-      <div class="peciolo-list">
-        <div class="peciolo" data-i18n="ep">Popular Education</div>
-        <div class="peciolo" data-i18n="cs">Community Service</div>
-        <div class="peciolo" data-i18n="pacha">Pachamama</div>
+   <section id="subcommittees" class="subcommittees bg-teal-50 py-16">
+      <h2 class="text-4xl font-bold text-gray-800 mb-12 text-center" data-i18n="peciolos">Peciolos</h2>
+      <p class="text-lg text-gray-700 mb-10 text-center" data-i18n="peciolosIntro">Our work is organized into several key areas, our "peciolos," each focusing on a vital aspect of community empowerment.</p>
+      <div class="peciolo-list grid md:grid-cols-3 gap-8">
+        <div class="peciolo text-center p-6 shadow-md hover:shadow-lg transition-shadow">
+            <i class="fas fa-users text-3xl text-primary mb-3"></i>
+            <h3 class="text-xl font-semibold" data-i18n="ep">Popular Education</h3>
+        </div>
+        <div class="peciolo text-center p-6 shadow-md hover:shadow-lg transition-shadow">
+            <i class="fas fa-hands-helping text-3xl text-primary mb-3"></i>
+            <h3 class="text-xl font-semibold" data-i18n="cs">Community Service</h3>
+        </div>
+        <div class="peciolo text-center p-6 shadow-md hover:shadow-lg transition-shadow">
+            <i class="fas fa-leaf text-3xl text-primary mb-3"></i>
+            <h3 class="text-xl font-semibold" data-i18n="pacha">Pachamama</h3>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
     <section id="events" class="bg-teal-900 py-16 px-4">
   <div class="max-w-7xl mx-auto">
@@ -645,7 +667,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       
       <!-- Event 1 -->
-     <div class="bg-white rounded-xl shadow-md overflow-hidden relative">
+     <div class="bg-white rounded-xl shadow-md overflow-hidden relative event-card">
        <div class="absolute top-0 left-0 text-white text-center px-4 py-2 rounded-br-xl z-20 event-info">
           <p class="text-2xl font-bold leading-none">13</p>
           <p class="text-sm uppercase">May 2025</p>
@@ -659,7 +681,7 @@
       </div>
 
       <!-- Event 2 -->
-   <div class="relative bg-white rounded-xl shadow-md overflow-hidden">
+   <div class="relative bg-white rounded-xl shadow-md overflow-hidden event-card">
   <!-- Date box -->
   <div class="absolute top-0 left-0 text-white text-center px-4 py-2 rounded-br-xl z-20 event-info">
     <p class="text-2xl font-bold leading-none ">13</p>
@@ -678,7 +700,7 @@
 </div>
   
       <!-- Event 3 -->
-<div class="bg-white rounded-xl shadow-md overflow-hidden relative">
+<div class="bg-white rounded-xl shadow-md overflow-hidden relative event-card">
          <div class="absolute top-0 left-0 text-white text-center px-4 py-2 rounded-br-xl z-20 event-info">
           <p data-i18n="event3number" class="text-2xl font-bold leading-none ">Reoccuring</p>
           <p data-i18n="event3date" class="text-sm uppercase ">Every Wednesday</p>
@@ -695,9 +717,39 @@
 </section>
     <section id="shop" class="shop">
       <h2 class="text-3xl font-bold text-black mb-12 text-center" data-i18n="shopTitle">Support FLORES</h2>
-      <p data-i18n="shopText">Shop our buttons, shirts, and more to support our mission.</p>
-      <button data-i18n="shopBtn">Visit Shop</button>
-    </section>
+       <p class="text-lg text-gray-700 mb-12 text-center max-w-2xl mx-auto" data-i18n="shopText">
+        Help us continue our work by purchasing our merchandise or making a donation. Every contribution makes a difference!
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col items-center p-6 transform hover:scale-105 transition-transform duration-300">
+          <img src="shirt.png?text=FLORES+T-Shirt&font=raleway" alt="FLORES T-Shirt" class="w-full h-64 object-contain mb-4 rounded">
+          <h3 class="text-2xl font-semibold text-teal-900 mb-2" data-i18n="shirtname">FLORES T-Shirt</h3>
+          <p class="text-gray-600 text-sm mb-3 text-center" data-i18n="shirtdesc">Show your support with our official FLORES T-Shirt. Made from 100% organic cotton.</p>
+          <p class="text-xl font-bold text-teal-700 mb-5" data-i18n="shirtprice">$25.00</p>
+          <a href="#" class="mt-auto inline-block bg-yellow-500 text-gray-900 px-8 py-3 rounded-lg hover:bg-yellow-600 font-semibold text-md transition-colors" data-i18n="buyButton">Buy T-Shirt</a>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col items-center p-6 transform hover:scale-105 transition-transform duration-300">
+          <img src="sticker.png?text=FLORES+Sticker&font=raleway" alt="FLORES Sticker" class="w-full h-64 object-contain mb-4 rounded">
+          <h3 class="text-2xl font-semibold text-teal-900 mb-2" data-i18n="stickername">FLORES Sticker</h3>
+          <p class="text-gray-600 text-sm mb-3 text-center" data-i18n="stickerdesc">High-quality vinyl sticker, perfect for laptops, water bottles, and more!</p>
+          <p class="text-xl font-bold text-teal-700 mb-5" data-i18n="stickerPrice">$5.00</p>
+          <a href="#" class="mt-auto inline-block bg-yellow-500 text-gray-900 px-8 py-3 rounded-lg hover:bg-yellow-600 font-semibold text-md transition-colors" data-i18n="buyButton">Buy Sticker</a>
+        </div>
+        
+         <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col items-center p-6 transform hover:scale-105 transition-transform duration-300">
+          <img src="donation.png?text=FLORES+Donation&font=raleway" alt="FLORES Sticker" class="w-full h-64 object-contain mb-4 rounded">
+            <i class="fas fa-hand-holding-heart text-5xl text-yellow-400 mb-4"></i>
+            <h3 class="text-2xl font-semibold text-teal-900 mb-2" data-i18n="donateTitle">Make a Donation</h3>
+            <p class="text-gray-600 text-sm mb-3 text-center" data-i18n="donateDesc">Your generous donations help us fund our programs and initiatives. Support FLORES today!</p>
+            <a href="#" class="mt-auto inline-block bg-yellow-500 text-gray-900 px-8 py-3 rounded-lg hover:bg-yellow-600 font-semibold text-md transition-colors" data-i18n="donateButton">Donate Now</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
 
      <section id="contact">
     <h2 data-i18n="contact" class="text-3xl font-bold text-black mb-12 text-center" >Contact Us</h2>
@@ -707,7 +759,7 @@
       <textarea name="message" placeholder="Message / Mensaje" required></textarea>
       <button type="submit" class="download-btn">Send</button>
     </form>
-    <div id="form-message" style="display:none;" data-i18n="thanks" >Thanks you!</div>
+    <div id="form-message" style="display:none;" data-i18n="thanks" >Thank you!</div>
   </section>
   </main>
 
@@ -736,6 +788,17 @@ function moveCarousel(direction) {
 
     const translations = {
       es: {
+        peciolosIntro: "Nuestro trabajo se organiza en varias áreas clave, nuestros \"peciolos\", cada uno centrado en un aspecto vital del empoderamiento comunitario.",
+        shirtname: "Camiseta FLORES",
+      shirtdesc: "Muestra tu apoyo con nuestra camiseta oficial de FLORES. Hecha de algodón 100% orgánico.",
+      shirtprice: "$25.00",
+      stickername: "Calcomanía FLORES",
+      stickerdesc: "Calcomanía de vinilo de alta calidad, ¡perfecta para laptops, botellas de agua y más!",
+      stickerPrice: "$5.00",
+      buyButton: "Comprar",
+      donateTitle: "Haz una Donación",
+      donateDesc: "Tus generosas donaciones nos ayudan a financiar nuestros programas e iniciativas. ¡Apoya a FLORES hoy!",
+      donateButton: "Donar Ahora",
         thanks: "¡Gracias!",
         comingsoon: "Muy pronto!",
         event3number: "Periódico",
@@ -750,7 +813,7 @@ function moveCarousel(direction) {
         about: "Sobre Nosotros",
         subtitle: "Organizadores Latines Reuniéndose <br> y Educando en los Suburbios",
         missionTitle: "Nuestra Misión",
-        missionText: "Aquí va la declaración de misión",
+        missionText: "Como flores, FLORES (Organizadores Latinos que Reconectan y Educan en los Suburbios) impulsa el crecimiento del liderazgo y la comunidad latina en las zonas suburbanas. Florecemos compartiendo conocimiento mediante la educación popular, enriquecemos nuestra tierra con el servicio comunitario y honramos nuestras raíces con una profunda conexión con la Pachamama, cultivando una próspera red de organizadores comprometidos.",
         peciolos: "Peciolos",
         ep: "Educación Popular",
         cs: "Servicio Comunitario",
@@ -761,7 +824,7 @@ function moveCarousel(direction) {
         fund: "Recaudaciones",
         shop: "Tienda",
         shopTitle: "Apoya a FLORES",
-        shopText: "Compra botones, camisetas y más para apoyar nuestra misión.",
+        shopText: "Ayúdanos a continuar nuestra labor comprando nuestros productos o haciendo una donación. ¡Cada contribución marca la diferencia!",
         shopBtn: "Visitar Tienda",
         contact: "Contáctanos",
         name: "Nombre:",
@@ -770,6 +833,17 @@ function moveCarousel(direction) {
         send: "Enviar"
       },
       en: {
+        peciolosIntro: "Our work is organized into several key areas, our \"peciolos,\" each focusing on a vital aspect of community empowerment.",
+        shirtname: "FLORES T-Shirt",
+      shirtdesc: "Show your support with our official FLORES T-Shirt. Made from 100% organic cotton.",
+      shirtprice: "$25.00",
+      stickername: "FLORES Sticker",
+      stickerdesc: "High-quality vinyl sticker, perfect for laptops, water bottles, and more!",
+      stickerprice: "$5.00",
+      buyButton: "Buy Now",
+      donateTitle: "Make a Donation",
+      donateDesc: "Your generous donations help us fund our programs and initiatives. Support FLORES today!",
+      donateButton: "Donate Now",
         thanks:"Thank you!",
         comingsoon: "Coming soon!",
         event3number: "Reoccuring",
@@ -784,7 +858,7 @@ function moveCarousel(direction) {
         about: "About",
         subtitle: "Fellow Latine Organizers Reconnecting <br> and Educating in the Suburbs",
         missionTitle: "Our Mission",
-        missionText: "Placeholder, give mission statement here",
+        missionText: "Like flowers, FLORES (Fellow Latine Organizers Reconnecting and Educating in the Suburbs) nurtures the growth of Latine leadership and community in suburban areas. We blossom through shared knowledge via popular education, enrich our soil through community service, and honor our roots with a deep connection to Pachamama, cultivating a thriving network of engaged organizers.",
         peciolos: "Peciolos",
         ep: "Popular Education",
         cs: "Community Service",
@@ -795,7 +869,7 @@ function moveCarousel(direction) {
         fund: "Fundraisers",
         shop: "Shop",
         shopTitle: "Support FLORES",
-        shopText: "Shop our buttons, shirts, and more to support our mission.",
+        shopText: " Help us continue our work by purchasing our merchandise or making a donation. Every contribution makes a difference!",
         shopBtn: "Visit Shop",
         contact: "Contact Us",
         name: "Name:",
@@ -831,33 +905,6 @@ function moveCarousel(direction) {
       navLinks.classList.toggle('show');
     });
   });
-</script>
-<script>
-document.getElementById('contact-form').addEventListener('submit', function(event) {
-  event.preventDefault();
-
-  const form = event.target;
-  const formData = new FormData(form);
-
-  fetch('https://formspree.io/f/meogzazn', {
-    method: 'POST',
-    body: formData,
-    headers: {
-      'Accept': 'application/json'
-    }
-  }).then(response => {
-    if (response.ok) {
-      document.getElementById('form-message').style.display = 'block';
-      form.reset();
-    } else {
-      response.json().then(data => {
-        alert(data.error || 'Oops! There was a problem.');
-      });
-    }
-  }).catch(error => {
-    alert('Oops! There was a problem submitting your form.');
-  });
-});
 </script>
 <script>
 document.getElementById('contact-form').addEventListener('submit', function(event) {
